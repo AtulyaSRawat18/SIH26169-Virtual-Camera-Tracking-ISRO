@@ -132,7 +132,8 @@ def render_world_view(config: dict) -> np.ndarray:
     target_px = observer_project(target[None, :], (width, height))[0]
     cv2.line(canvas, tuple(origin_px), tuple(target_px), (80, 220, 255), 2, cv2.LINE_AA)
     cv2.circle(canvas, tuple(target_px), 10, (80, 220, 255), -1, cv2.LINE_AA)
-    cv2.putText(canvas, "stationary target", tuple(target_px + [12, -10]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (80, 220, 255), 1)
+    target_label = str(config.get("target_label", "stationary target"))
+    cv2.putText(canvas, target_label, tuple(target_px + [12, -10]), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (80, 220, 255), 1)
     cv2.putText(canvas, "3D WORLD VIEW", (18, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (235, 240, 250), 2)
     return canvas
 
@@ -187,4 +188,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

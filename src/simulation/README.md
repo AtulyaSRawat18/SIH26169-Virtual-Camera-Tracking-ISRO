@@ -23,3 +23,13 @@ python src/simulation/stationary_demo.py
 ```
 
 Success means the green detection cross is centred on the beacon and the reported error is at most 2 pixels.
+
+## Run the live simulation
+
+```powershell
+python src/simulation/live_demo.py
+```
+
+The target follows a configurable 3D path while OpenCV detects every newly rendered frame. Controls: `Space` pauses or resumes, `R` resets and `Q` or `Esc` exits.
+
+Motion amplitude, frequency and requested FPS are configured in `configs/live.json`.

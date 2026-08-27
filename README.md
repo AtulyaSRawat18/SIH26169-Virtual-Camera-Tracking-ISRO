@@ -29,3 +29,11 @@ python src/simulation/stationary_demo.py
 ```
 
 The demo displays the 3D world and the virtual camera side by side, saves `evidence/stationary_step1.png`, and fails if detection error exceeds 2 pixels.
+
+## Step 2 — live simulation
+
+```powershell
+python src/simulation/live_demo.py
+```
+
+The target moves continuously in 3D and OpenCV detects it from each noisy virtual-camera frame. Press `Space` to pause, `R` to reset, and `Q` or `Esc` to exit. Edit `configs/live.json` to change FPS, path amplitude or motion frequency.
