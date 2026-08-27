@@ -1,0 +1,15 @@
+{
+  "seed": 26169,
+  "target_position_m": [0.6, 0.25, 8.0],
+  "camera": {
+    "width_px": 640,
+    "height_px": 480,
+    "focal_length_px": 520.0
+  },
+  "render": {
+    "beacon_radius_px": 9,
+    "noise_sigma": 4.0,
+    "threshold": 120
+  }
+}
+
