@@ -52,3 +52,15 @@ python -m uvicorn backend.app:app --host 127.0.0.1 --port 8000
 ```
 
 Open `http://127.0.0.1:8000`. Drag the observer view to orbit, scroll to zoom and right-drag to pan. The observer camera is independent of the simulated tracking camera.
+
+## One-command launch on Windows
+
+Double-click `launch_simulation.cmd`, or run it from PowerShell:
+
+```powershell
+.\launch_simulation.cmd
+```
+
+The launcher uses the project-local virtual environment directly, builds the dashboard, opens the browser and starts the server. To stop it, press `Ctrl+C` in its terminal and then `Y` if Windows asks for confirmation.
+
+See `docs/technology-stack.md` for the technologies currently used, their purposes and the planned YOLO/PyTorch layer.
