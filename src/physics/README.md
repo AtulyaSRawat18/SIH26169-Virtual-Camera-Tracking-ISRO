@@ -4,6 +4,8 @@
 
 Generate deterministic target motion, camera pose, 3D-to-2D projection and actuator response.
 
+`cw.py` implements RK4 propagation of Clohessy-Wiltshire relative orbital dynamics in the Hill frame.
+
 ## Technologies
 
 Python, NumPy and limited SciPy utilities.

@@ -4,6 +4,8 @@
 
 Turn image-centre error into safe virtual pan-and-tilt commands.
 
+`pid.py` contains bounded PID axes and a first-order actuator response with angular-rate limits.
+
 ## Technologies
 
 Python and NumPy.

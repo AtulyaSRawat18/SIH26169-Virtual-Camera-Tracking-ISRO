@@ -4,6 +4,8 @@
 
 Smooth noisy detections, estimate velocity and handle acquisition, loss and reacquisition.
 
+`kalman.py` implements the current constant-velocity image-plane Kalman filter.
+
 ## Technologies
 
 Python and NumPy.

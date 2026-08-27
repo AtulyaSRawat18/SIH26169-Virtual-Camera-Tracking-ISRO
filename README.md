@@ -37,3 +37,18 @@ python src/simulation/live_demo.py
 ```
 
 The target moves continuously in 3D and OpenCV detects it from each noisy virtual-camera frame. Press `Space` to pause, `R` to reset, and `Q` or `Esc` to exit. Edit `configs/live.json` to change FPS, path amplitude or motion frequency.
+
+## Integrated browser dashboard
+
+This mode adds interactive Three.js inspection, Clohessy-Wiltshire relative motion, Kalman filtering and PID-driven camera pan/tilt.
+
+```powershell
+python -m pip install -r requirements.txt
+cd frontend
+npm install
+npm run build
+cd ..
+python -m uvicorn backend.app:app --host 127.0.0.1 --port 8000
+```
+
+Open `http://127.0.0.1:8000`. Drag the observer view to orbit, scroll to zoom and right-drag to pan. The observer camera is independent of the simulated tracking camera.

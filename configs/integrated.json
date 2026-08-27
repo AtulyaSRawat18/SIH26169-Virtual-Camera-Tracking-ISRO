@@ -1,0 +1,33 @@
+{
+  "seed": 26169,
+  "fps": 30,
+  "time_scale": 60.0,
+  "orbit": {
+    "earth_radius_m": 6371000.0,
+    "altitude_m": 400000.0,
+    "earth_mu_m3_s2": 398600441800000.0,
+    "initial_hill_position_m": [0.0, 1.5, 0.8],
+    "initial_hill_velocity_m_s": [0.0, 0.0005, 0.0002],
+    "nominal_camera_range_m": 8.0
+  },
+  "camera": {
+    "width_px": 640,
+    "height_px": 480,
+    "focal_length_px": 520.0,
+    "beacon_radius_px": 8,
+    "noise_sigma": 5.0,
+    "threshold": 120
+  },
+  "kalman": {
+    "process_noise": 8.0,
+    "measurement_noise": 4.0
+  },
+  "pid": {
+    "kp": 0.003,
+    "ki": 0.000005,
+    "kd": 0.0001,
+    "integral_limit": 500.0,
+    "max_rate_rad_s": 0.25,
+    "actuator_response_time_s": 0.12
+  }
+}
