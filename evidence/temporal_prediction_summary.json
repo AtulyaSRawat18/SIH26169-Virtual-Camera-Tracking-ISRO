@@ -1,0 +1,13 @@
+{
+  "schema": "temporal-prediction-evidence-1.0.0",
+  "dataset_id": "temporal-a45e319c843c",
+  "dataset_version": "temporal-state-1.3.0",
+  "split_counts": {"train": 1344, "validation": 1344, "test": 1344, "ood_test": 672},
+  "horizons_s": [0.02, 0.05, 0.1, 0.2],
+  "held_out_rmse_px": {"none": 14.28806305, "cv": 16.94979858, "gru": 14.71500301, "lstm": 14.35371685, "gru_residual_cv": 19.90833282},
+  "ood_rmse_px": {"none": 17.25353622, "cv": 21.11605453, "gru": 11.50273132, "lstm": 8.73294258, "gru_residual_cv": 13.51266384},
+  "nominal_live_replay_50ms_rmse_px": {"none": 7.14991372, "cv": 6.83114163, "ca": 6.79582600, "gru": 6.68285618},
+  "closed_loop_paired_rmse_px": {"none_pid": 72.72294271, "cv_ff_pid": 78.55031407, "ca_ff_pid": 78.74637882, "gru_ff_pid": 79.75861844},
+  "promotion_decision": "REJECTED_KEEP_EXPERIMENTAL",
+  "reason": "Scenario-dependent open-loop gains did not transfer to the complete closed loop"
+}

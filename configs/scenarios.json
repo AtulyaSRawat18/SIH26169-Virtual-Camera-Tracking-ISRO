@@ -1,0 +1,101 @@
+{
+  "scenario_version": "1.3.0",
+  "pipelines": {
+    "DEFAULT_STABLE": {"status": "runnable", "vision": {"algorithm": "centroid", "correction": "none", "cnn_correction": false}, "estimator": "kalman", "predictor": "none", "controller": "pid", "reacquisition": "basic"},
+    "REFERENCE_BASELINE": {"status": "runnable", "evidence": "Reference comparison chain; full regression coverage", "vision": {"algorithm": "centroid", "correction": "none", "cnn_correction": false}, "estimator": "kalman", "predictor": "none", "controller": "pid", "reacquisition": "basic"},
+    "CURRENT_BEST_VALIDATED": {"status": "runnable", "evidence": "Prompt 11 100-pair combined-stress gate: Gradient+UKF had about 3x localization error and 14.65% higher latency with unchanged lock/link; candidate not promoted, stable classical chain retained", "vision": {"algorithm": "centroid", "correction": "none", "cnn_correction": false}, "estimator": "kalman", "predictor": "none", "controller": "pid", "reacquisition": "basic"},
+    "BEST_CLASSICAL_LOCALIZER": {"status": "runnable", "evidence": "Prompt 3 preliminary paired matrix, seeds 41/42", "vision": {"algorithm": "gradient_centroid", "correction": "none", "cnn_correction": false}, "estimator": "kalman", "predictor": "none", "controller": "pid", "reacquisition": "basic"},
+    "BEST_CLASSICAL_ESTIMATOR": {"status": "runnable", "evidence": "Prompt 4 preliminary open-loop matrix, seeds 41/42", "vision": {"algorithm": "gradient_centroid", "correction": "none", "cnn_correction": false}, "estimator": "ukf_angular", "predictor": "none", "controller": "pid", "reacquisition": "basic"},
+    "AI_MEASUREMENT_HYBRID": {"status": "runnable", "evidence": "Experimental only: CNN v4 did not beat classical localization on held-out or OOD aggregate", "vision": {"algorithm": "gradient_centroid", "correction": "cnn_residual", "cnn_correction": true}, "cnn": {"enabled": true, "model_id": "cnn-tiny-residual-v4", "model_path": "models/cnn/cnn-tiny-residual-v4-best.pt"}, "estimator": "akf_r", "predictor": "none", "controller": "pid", "reacquisition": "basic"},
+    "PREDICTIVE_GRU_EXPERIMENT": {"status": "runnable", "evidence": "Experimental only: GRU helps several regimes but fails the all-scenario promotion gate", "vision": {"algorithm": "gradient_centroid", "correction": "none", "cnn_correction": false}, "estimator": "akf_r", "predictor": "gru", "controller": "ff_pid", "prediction_horizon_s": 0.05, "reacquisition": "basic"},
+    "CONTROL_PID_BASELINE": {"status": "runnable", "evidence": "Prompt 7 angular PID baseline", "controller": "pid"},
+    "CONTROL_FF_PID": {"status": "runnable", "evidence": "Prompt 7 uncertainty-aware feed-forward PID", "controller": "ff_pid", "predictor": "cv", "prediction_horizon_s": 0.05},
+    "CONTROL_GAIN_SCHEDULED_PID": {"status": "runnable", "evidence": "Prompt 7 smooth LOS-rate gain scheduling", "controller": "gain_scheduled_pid"},
+    "CONTROL_LQR": {"status": "runnable", "evidence": "Prompt 7 discrete Riccati LQR", "controller": "lqr", "predictor": "cv", "prediction_horizon_s": 0.05},
+    "CONTROL_MPC_EXPERIMENT": {"status": "runnable", "evidence": "Prompt 7 constrained finite-horizon MPC with deterministic fallback", "controller": "mpc", "predictor": "cv", "prediction_horizon_s": 0.05},
+    "RECOMMENDED_HYBRID": {"status": "evidence gate failed", "required": ["validated_cnn_gain", "validated_closed_loop_predictor_gain"], "evidence": "Prompt 5 and 6 paired tests retain the classical production baseline; ML stages remain selectable experiments"}
+  },
+  "presets": {
+    "SAT_CW_BOUNDED_ELLIPSE": {"scenario": "satellite_satellite", "motion_model": "cw_analytical", "cw_case": "bounded_ellipse", "time_scale": 60, "orbit": {"initial_hill_position_m": [10,0,0], "initial_hill_velocity_m_s": [0,-0.02266311814616752,0]}, "disturbance": {"preset_level": "NOMINAL", "atmosphere": {"enabled": false}, "vibration": {"enabled": false, "level": "NONE"}}},
+    "SAT_CW_IN_PLANE": {"scenario": "satellite_satellite", "motion_model": "cw_analytical", "cw_case": "in_plane_ellipse", "time_scale": 60, "orbit": {"initial_hill_position_m": [15,30,0], "initial_hill_velocity_m_s": [0.04,-0.03399467721925127,0]}, "disturbance": {"preset_level": "NOMINAL", "atmosphere": {"enabled": false}}},
+    "SAT_CW_ALONG_TRACK_DRIFT": {"scenario": "satellite_satellite", "motion_model": "cw_analytical", "cw_case": "along_track_drift", "time_scale": 60, "orbit": {"initial_hill_position_m": [10,0,0], "initial_hill_velocity_m_s": [0,-0.01356,0]}, "disturbance": {"preset_level": "LOW", "atmosphere": {"enabled": false}}},
+    "SAT_CW_CROSS_TRACK": {"scenario": "satellite_satellite", "motion_model": "cw_analytical", "cw_case": "cross_track_oscillation", "time_scale": 60, "orbit": {"initial_hill_position_m": [0,0,25], "initial_hill_velocity_m_s": [0,0,0.05]}, "disturbance": {"preset_level": "NOMINAL", "atmosphere": {"enabled": false}}},
+    "SAT_CW_3D_FORMATION": {"scenario": "satellite_satellite", "motion_model": "cw_analytical", "cw_case": "formation_3d", "time_scale": 60, "orbit": {"initial_hill_position_m": [12,20,15], "initial_hill_velocity_m_s": [0.03,-0.02719574177540102,0.04]}, "disturbance": {"preset_level": "LOW", "atmosphere": {"enabled": false}}},
+    "SAT_SAT_NOMINAL": {
+      "scenario": "satellite_satellite", "motion_model": "cw", "time_scale": 60,
+      "platform": {"observer_type": "satellite", "target_type": "satellite", "altitude_m": 400000, "target_altitude_m": 400000, "speed_mps": 0, "angular_rate_rad_s": 0.00113, "elevation_deg": 90, "wind_speed_mps": 0},
+      "disturbance": {"preset_level": "NOMINAL", "atmosphere": {"enabled": false}, "vibration": {"enabled": false, "level": "NONE"}}
+    },
+    "SAT_SAT_STRESS": {
+      "scenario": "satellite_satellite", "motion_model": "cw", "time_scale": 60,
+      "platform": {"observer_type": "satellite", "target_type": "satellite", "altitude_m": 400000, "target_altitude_m": 400000, "speed_mps": 0, "angular_rate_rad_s": 0.00113, "elevation_deg": 90, "wind_speed_mps": 0},
+      "disturbance": {"preset_level": "HIGH", "navigation": {"enabled": true, "position_noise_sigma_m": 0.2}, "attitude": {"enabled": true, "white_noise_sigma_rad": 0.00015}, "vibration": {"enabled": true, "level": "HIGH", "stochastic_sigma_rad": 0.00008, "pan": [{"amplitude_rad": 0.0012, "frequency_hz": 7.5}], "tilt": [{"amplitude_rad": 0.0008, "frequency_hz": 11.0}]}, "boresight": {"enabled": true, "pan_offset_rad": 0.0005, "tilt_offset_rad": -0.00035}, "beacon": {"nominal_intensity": 190, "brightness_variation_fraction": 0.15, "flicker_frequency_hz": 2.0}}
+    },
+    "GROUND_SAT_CLEAR": {
+      "scenario": "ground_satellite", "motion_model": "kinematic", "time_scale": 1,
+      "platform": {"observer_type": "ground", "target_type": "satellite", "altitude_m": 0, "target_altitude_m": 400000, "speed_mps": 7600, "angular_rate_rad_s": 0.012, "elevation_deg": 60, "wind_speed_mps": 2},
+      "kinematic": {"initial_position_m": [-50, 80, 1200], "velocity_m_s": [18, -1, -3], "angular_rate_rad_s": 0.01, "lateral_amplitude_m": 20},
+      "disturbance": {"preset_level": "LOW", "atmosphere": {"enabled": true, "attenuation": 0.85, "cloud_attenuation": 1, "beam_wander_sigma_rad": 0.00005, "turbulence_strength": 0.1, "environment_brightness": 8, "elevation_scaling": true, "visibility_km": 80}}
+    },
+    "GROUND_SAT_LOW_ELEVATION": {
+      "scenario": "ground_satellite", "motion_model": "kinematic", "time_scale": 1,
+      "platform": {"observer_type": "ground", "target_type": "satellite", "altitude_m": 0, "target_altitude_m": 400000, "speed_mps": 7600, "angular_rate_rad_s": 0.02, "elevation_deg": 15, "wind_speed_mps": 4},
+      "kinematic": {"initial_position_m": [-150, 40, 1600], "velocity_m_s": [35, 1, -5], "angular_rate_rad_s": 0.018, "lateral_amplitude_m": 25},
+      "disturbance": {"preset_level": "MEDIUM", "atmosphere": {"enabled": true, "attenuation": 0.75, "cloud_attenuation": 0.9, "beam_wander_sigma_rad": 0.00015, "turbulence_strength": 0.35, "environment_brightness": 18, "elevation_scaling": true, "visibility_km": 40}, "glare": {"enabled": true, "intensity": 28}}
+    },
+    "GROUND_SAT_TURBULENT": {
+      "scenario": "ground_satellite", "motion_model": "kinematic", "time_scale": 1,
+      "platform": {"observer_type": "ground", "target_type": "satellite", "altitude_m": 0, "target_altitude_m": 400000, "speed_mps": 7600, "angular_rate_rad_s": 0.014, "elevation_deg": 35, "wind_speed_mps": 8},
+      "kinematic": {"initial_position_m": [-80, 60, 1300], "velocity_m_s": [25, 0, -4], "angular_rate_rad_s": 0.013, "lateral_amplitude_m": 30},
+      "disturbance": {"preset_level": "HIGH", "atmosphere": {"enabled": true, "attenuation": 0.62, "cloud_attenuation": 0.8, "beam_wander_sigma_rad": 0.00045, "turbulence_strength": 0.8, "environment_brightness": 15, "elevation_scaling": true, "visibility_km": 25}}
+    },
+    "GROUND_SAT_WEAK_BEACON": {
+      "scenario": "ground_satellite", "motion_model": "kinematic", "time_scale": 1,
+      "platform": {"observer_type": "ground", "target_type": "satellite", "altitude_m": 0, "target_altitude_m": 400000, "speed_mps": 7600, "angular_rate_rad_s": 0.012, "elevation_deg": 50, "wind_speed_mps": 3},
+      "kinematic": {"initial_position_m": [-50, 80, 1200], "velocity_m_s": [18, -1, -3], "angular_rate_rad_s": 0.01, "lateral_amplitude_m": 20},
+      "disturbance": {"preset_level": "WEAK_BEACON", "beacon": {"nominal_intensity": 105, "brightness_variation_fraction": 0.25, "flicker_frequency_hz": 3}, "atmosphere": {"enabled": true, "attenuation": 0.75, "cloud_attenuation": 0.8, "beam_wander_sigma_rad": 0.0001, "turbulence_strength": 0.25, "environment_brightness": 14, "elevation_scaling": true, "visibility_km": 50}}
+    },
+    "UAV_GROUND_LOW_ALT": {
+      "scenario": "uav_ground", "motion_model": "kinematic", "time_scale": 1,
+      "platform": {"observer_type": "ground", "target_type": "uav", "altitude_m": 0, "target_altitude_m": 120, "speed_mps": 15, "angular_rate_rad_s": 0.04, "elevation_deg": 35, "wind_speed_mps": 3},
+      "kinematic": {"initial_position_m": [-30, 40, 500], "velocity_m_s": [15, 0, -0.3], "angular_rate_rad_s": 0.035, "lateral_amplitude_m": 12},
+      "disturbance": {"preset_level": "LOW", "vibration": {"enabled": true, "level": "LOW", "pan": [{"amplitude_rad": 0.0005, "frequency_hz": 18}], "tilt": [{"amplitude_rad": 0.0004, "frequency_hz": 22}]}, "atmosphere": {"enabled": true, "attenuation": 0.95, "beam_wander_sigma_rad": 0.00003, "environment_brightness": 10, "visibility_km": 20}}
+    },
+    "UAV_GROUND_HIGH_ALT": {
+      "scenario": "uav_ground", "motion_model": "kinematic", "time_scale": 1,
+      "platform": {"observer_type": "ground", "target_type": "uav", "altitude_m": 0, "target_altitude_m": 1200, "speed_mps": 28, "angular_rate_rad_s": 0.025, "elevation_deg": 50, "wind_speed_mps": 7},
+      "kinematic": {"initial_position_m": [-80, 120, 1000], "velocity_m_s": [28, 1, -1], "angular_rate_rad_s": 0.022, "lateral_amplitude_m": 30},
+      "disturbance": {"preset_level": "MEDIUM", "vibration": {"enabled": true, "level": "MEDIUM", "pan": [{"amplitude_rad": 0.001, "frequency_hz": 16}], "tilt": [{"amplitude_rad": 0.0008, "frequency_hz": 21}]}, "atmosphere": {"enabled": true, "attenuation": 0.9, "beam_wander_sigma_rad": 0.00008, "environment_brightness": 12, "visibility_km": 30}}
+    },
+    "UAV_GROUND_WINDY": {
+      "scenario": "uav_ground", "motion_model": "kinematic", "time_scale": 1,
+      "platform": {"observer_type": "ground", "target_type": "uav", "altitude_m": 0, "target_altitude_m": 250, "speed_mps": 22, "angular_rate_rad_s": 0.08, "elevation_deg": 30, "wind_speed_mps": 15},
+      "kinematic": {"initial_position_m": [-50, 70, 600], "velocity_m_s": [22, 2, -0.5], "angular_rate_rad_s": 0.07, "lateral_amplitude_m": 35},
+      "disturbance": {"preset_level": "HIGH", "attitude": {"enabled": true, "white_noise_sigma_rad": 0.0004, "drift_rate_rad_s": [0.0001, -0.00008]}, "vibration": {"enabled": true, "level": "HIGH", "stochastic_sigma_rad": 0.0002, "pan": [{"amplitude_rad": 0.002, "frequency_hz": 15}], "tilt": [{"amplitude_rad": 0.0015, "frequency_hz": 23}]}, "manoeuvre": {"enabled": true, "start_s": 4, "velocity_impulse_m_s": [2, -1, 0], "duration_s": 0}}
+    },
+    "UAV_UAV_MODERATE": {
+      "scenario": "uav_uav", "motion_model": "kinematic", "time_scale": 1,
+      "platform": {"observer_type": "uav", "target_type": "uav", "altitude_m": 300, "target_altitude_m": 340, "speed_mps": 20, "angular_rate_rad_s": 0.06, "elevation_deg": 10, "wind_speed_mps": 6},
+      "kinematic": {"initial_position_m": [-40, 15, 400], "velocity_m_s": [12, 1, -0.4], "angular_rate_rad_s": 0.05, "lateral_amplitude_m": 20},
+      "disturbance": {"preset_level": "MEDIUM", "attitude": {"enabled": true, "white_noise_sigma_rad": 0.0003}, "vibration": {"enabled": true, "level": "MEDIUM", "pan": [{"amplitude_rad": 0.0012, "frequency_hz": 17}], "tilt": [{"amplitude_rad": 0.001, "frequency_hz": 20}]}, "atmosphere": {"enabled": true, "attenuation": 0.94, "beam_wander_sigma_rad": 0.00005, "environment_brightness": 7, "visibility_km": 25}}
+    },
+    "UAV_UAV_AGGRESSIVE": {
+      "scenario": "uav_uav", "motion_model": "kinematic", "time_scale": 1,
+      "platform": {"observer_type": "uav", "target_type": "uav", "altitude_m": 180, "target_altitude_m": 250, "speed_mps": 35, "angular_rate_rad_s": 0.12, "elevation_deg": 15, "wind_speed_mps": 12},
+      "kinematic": {"initial_position_m": [-60, 25, 450], "velocity_m_s": [25, 3, -1], "angular_rate_rad_s": 0.1, "lateral_amplitude_m": 45},
+      "disturbance": {"preset_level": "HIGH", "attitude": {"enabled": true, "white_noise_sigma_rad": 0.0006, "drift_rate_rad_s": [0.0002, -0.0001]}, "vibration": {"enabled": true, "level": "HIGH", "stochastic_sigma_rad": 0.00025, "pan": [{"amplitude_rad": 0.0025, "frequency_hz": 19}], "tilt": [{"amplitude_rad": 0.002, "frequency_hz": 24}]}, "manoeuvre": {"enabled": true, "start_s": 3, "velocity_impulse_m_s": [4, 2, -1]}}
+    },
+    "UAV_SAT_NOMINAL": {
+      "scenario": "uav_satellite", "motion_model": "kinematic", "time_scale": 1,
+      "platform": {"observer_type": "uav", "target_type": "satellite", "altitude_m": 1000, "target_altitude_m": 400000, "speed_mps": 25, "angular_rate_rad_s": 0.018, "elevation_deg": 45, "wind_speed_mps": 6},
+      "kinematic": {"initial_position_m": [-100, 100, 1500], "velocity_m_s": [28, -1, -4], "angular_rate_rad_s": 0.016, "lateral_amplitude_m": 25},
+      "disturbance": {"preset_level": "MEDIUM", "vibration": {"enabled": true, "level": "MEDIUM", "pan": [{"amplitude_rad": 0.001, "frequency_hz": 18}], "tilt": [{"amplitude_rad": 0.0008, "frequency_hz": 23}]}, "beacon": {"nominal_intensity": 175, "brightness_variation_fraction": 0.1}, "atmosphere": {"enabled": true, "attenuation": 0.8, "cloud_attenuation": 0.95, "beam_wander_sigma_rad": 0.00012, "turbulence_strength": 0.25, "environment_brightness": 10, "elevation_scaling": true, "visibility_km": 60}}
+    },
+    "DEMO_1_NOMINAL_SAT_SAT": {"extends": "SAT_SAT_NOMINAL", "scenario": "satellite_satellite", "lock": {"start_locked": true}, "optical_link": {"enabled": true, "beam_divergence_urad": 5000}},
+    "DEMO_2_HIGH_VIBRATION": {"extends": "SAT_SAT_STRESS", "scenario": "satellite_satellite", "lock": {"start_locked": true}, "disturbance": {"preset_level": "HIGH"}, "optical_link": {"enabled": true, "beam_divergence_urad": 5000}},
+    "DEMO_3_WEAK_BEACON_GROUND_SAT": {"extends": "GROUND_SAT_WEAK_BEACON", "scenario": "ground_satellite", "lock": {"start_locked": true}, "optical_link": {"enabled": true, "beam_divergence_urad": 5000}},
+    "DEMO_4_DROPOUT_REACQUISITION": {"extends": "SAT_SAT_NOMINAL", "scenario": "satellite_satellite", "lock": {"start_locked": true}, "disturbance": {"beacon": {"hard_dropout_windows": [{"start_s": 4, "end_s": 6, "factor": 0}]}}, "optical_link": {"enabled": true, "beam_divergence_urad": 5000}},
+    "DEMO_5_AGGRESSIVE_UAV": {"extends": "UAV_UAV_AGGRESSIVE", "scenario": "uav_uav", "lock": {"start_locked": true}, "optical_link": {"enabled": true, "beam_divergence_urad": 5000}},
+    "DEMO_6_COMBINED_STRESS": {"extends": "SAT_SAT_STRESS", "scenario": "satellite_satellite", "lock": {"start_locked": true}, "disturbance": {"beacon": {"nominal_intensity": 150, "random_dropout_probability": 0.08}, "sensor": {"frame_dropout_probability": 0.03}}, "optical_link": {"enabled": true, "beam_divergence_urad": 5000}}
+  }
+}

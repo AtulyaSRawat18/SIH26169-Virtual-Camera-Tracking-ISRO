@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="500" viewBox="0 0 1500 500" role="img" aria-labelledby="title desc">
+  <title id="title">Closed-loop error cycle</title>
+  <desc id="desc">The target produces a camera spot, OpenCV and estimation locate it, control moves a constrained gimbal, and the next frame shows the remaining error.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07101a"/><stop offset="1" stop-color="#101c2a"/></linearGradient>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#62e5c3"/></marker>
+    <style>.tag{font:700 13px monospace;letter-spacing:2px;fill:#62e5c3}.title{font:700 30px Arial,sans-serif;fill:#fff}.box{fill:#111d2b;stroke:#33475d;stroke-width:2}.h{font:700 19px Arial,sans-serif;fill:#fff}.s{font:14px Arial,sans-serif;fill:#9fb0c4}.n{font:700 19px monospace;fill:#62e5c3}.line{stroke:#62e5c3;stroke-width:3;fill:none;marker-end:url(#a)}</style>
+  </defs>
+  <rect width="1500" height="500" rx="24" fill="url(#bg)"/>
+  <text class="tag" x="55" y="54">INTUITIVE CONTROL LOOP</text><text class="title" x="55" y="94">Each frame asks: where is the beacon, and how should the camera move?</text>
+  <g>
+    <rect class="box" x="55" y="165" width="230" height="130" rx="16"/><text class="n" x="80" y="200">01</text><text class="h" x="80" y="235">Target moves</text><text class="s" x="80" y="264">Physics changes line of sight</text>
+    <rect class="box" x="340" y="165" width="230" height="130" rx="16"/><text class="n" x="365" y="200">02</text><text class="h" x="365" y="235">Spot appears</text><text class="s" x="365" y="264">Camera adds real disturbances</text>
+    <rect class="box" x="625" y="165" width="230" height="130" rx="16"/><text class="n" x="650" y="200">03</text><text class="h" x="650" y="235">Position estimated</text><text class="s" x="650" y="264">OpenCV + Kalman uncertainty</text>
+    <rect class="box" x="910" y="165" width="230" height="130" rx="16"/><text class="n" x="935" y="200">04</text><text class="h" x="935" y="235">Error becomes command</text><text class="s" x="935" y="264">PID aims toward image centre</text>
+    <rect class="box" x="1195" y="165" width="250" height="130" rx="16"/><text class="n" x="1220" y="200">05</text><text class="h" x="1220" y="235">Gimbal responds</text><text class="s" x="1220" y="264">Limits + lag leave residual error</text>
+    <path class="line" d="M285 230 H340"/><path class="line" d="M570 230 H625"/><path class="line" d="M855 230 H910"/><path class="line" d="M1140 230 H1195"/>
+    <path class="line" d="M1320 295 V380 H455 V295"/><text class="tag" x="730" y="368">NEXT CAMERA FRAME — REPEAT UNTIL LOCKED</text>
+  </g>
+  <text class="s" x="55" y="450">A good detector can still produce poor tracking if prediction, control or actuator response is weak—so the system measures every stage.</text>
+</svg>

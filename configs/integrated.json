@@ -1,7 +1,39 @@
 {
-  "seed": 26169,
+  "simulation_schema_version": "6.0.0",
+  "physics_model_version": "cw-rk4-1.0.0",
+  "scenario_version": "1.2.0",
+  "scenario": "satellite_satellite",
+  "scenario_preset": "SAT_SAT_NOMINAL",
+  "pipeline_preset": "DEFAULT_STABLE",
+  "motion_model": "cw",
+  "disturbance": {"algorithm": "physical_error_system", "preset_level": "NOMINAL", "gaussian_noise": true, "blur": true},
+  "vision": {"algorithm": "centroid", "correction": "none", "cnn_correction": false, "threshold_strategy": "fixed", "fixed_threshold": 120},
+  "estimator": "kalman",
+  "predictor": "none",
+  "controller": "pid",
+  "reacquisition": "basic",
+  "prediction_horizon_s": 0,
+  "cnn": {
+    "enabled": false,
+    "model_id": "cnn-tiny-residual-v4",
+    "model_path": "models/cnn/cnn-tiny-residual-v4-best.pt",
+    "roi_size_px": 32,
+    "uncertainty_mode": "learned",
+    "fallback_to_classical": true
+  },
+  "temporal": {
+    "history_frames": 12,
+    "gru_model_path": "models/temporal/gru-small-v1-best.pt",
+    "lstm_model_path": "models/temporal/lstm-small-v1-best.pt",
+    "gru_residual_model_path": "models/temporal/gru-residual-cv-v1-best.pt",
+    "fallback": "cv"
+  },
+  "lock": {"lock_error_threshold_px": 20, "lock_required_frames": 3, "acquisition_required_frames": 2, "loss_error_threshold_px": 80, "max_missing_frames": 10, "reacquisition_required_frames": 2},
+  "seed": 42,
+  "run_index": 0,
   "fps": 30,
   "time_scale": 60.0,
+  "duration_s": 10,
   "orbit": {
     "earth_radius_m": 6371000.0,
     "altitude_m": 400000.0,
@@ -23,10 +55,10 @@
     "measurement_noise": 4.0
   },
   "pid": {
-    "kp": 0.003,
-    "ki": 0.000005,
-    "kd": 0.0001,
-    "integral_limit": 500.0,
+    "kp": 1.92,
+    "ki": 0.0032,
+    "kd": 0.064,
+    "integral_limit": 0.78,
     "max_rate_rad_s": 0.25,
     "actuator_response_time_s": 0.12
   }

@@ -1,0 +1,50 @@
+{
+  "kind": "CLASSICAL_VISION_BENCHMARK_SUMMARY",
+  "simulation_schema_version": "4.0.0",
+  "method": "paired deterministic full-frame, identical frame checksum per algorithm",
+  "seeds": [41, 42],
+  "samples_per_algorithm_per_condition": 16,
+  "algorithms": ["binary_centroid", "weighted_centroid", "gradient_centroid", "gaussian_fit"],
+  "rmse_px_by_condition": {
+    "CLEAN": {"binary_centroid": 0.395701, "weighted_centroid": 0.395665, "gradient_centroid": 0.396565, "gaussian_fit": 0.395943},
+    "WEAK_BEACON": {"binary_centroid": null, "weighted_centroid": null, "gradient_centroid": null, "gaussian_fit": null},
+    "HIGH_NOISE": {"binary_centroid": 0.408785, "weighted_centroid": 0.396086, "gradient_centroid": 0.406230, "gaussian_fit": 0.384917},
+    "BLUR": {"binary_centroid": 0.393316, "weighted_centroid": 0.393020, "gradient_centroid": 0.389744, "gaussian_fit": 0.393071},
+    "ELLIPTICAL": {"binary_centroid": 0.408509, "weighted_centroid": 0.400789, "gradient_centroid": 0.425672, "gaussian_fit": 0.394564},
+    "BACKGROUND": {"binary_centroid": 0.397800, "weighted_centroid": 0.394299, "gradient_centroid": 0.388509, "gaussian_fit": 0.413251},
+    "GLARE": {"binary_centroid": 9.450396, "weighted_centroid": 7.690937, "gradient_centroid": 0.555930, "gaussian_fit": 2.217004},
+    "DISTRACTOR": {"binary_centroid": 8.163336, "weighted_centroid": 8.162779, "gradient_centroid": 8.167231, "gaussian_fit": 8.134559},
+    "CLIPPING": {"binary_centroid": 0.428963, "weighted_centroid": 0.429668, "gradient_centroid": 0.429225, "gaussian_fit": 0.432221},
+    "SATURATION": {"binary_centroid": 0.396725, "weighted_centroid": 0.394760, "gradient_centroid": 0.392977, "gaussian_fit": 0.392945},
+    "DYNAMIC": {"binary_centroid": 0.377590, "weighted_centroid": 0.377272, "gradient_centroid": 0.371738, "gaussian_fit": 0.376542},
+    "COMBINED_STRESS": {"binary_centroid": 42.279215, "weighted_centroid": 42.283001, "gradient_centroid": 42.264498, "gaussian_fit": 42.280214}
+  },
+  "clean_mean_latency_ms": {"binary_centroid": 1.3361, "weighted_centroid": 1.2098, "gradient_centroid": 1.1252, "gaussian_fit": 4.0358},
+  "clean_p95_latency_ms": {"binary_centroid": 2.0643, "weighted_centroid": 1.9796, "gradient_centroid": 1.8595, "gaussian_fit": 4.9537},
+  "closed_loop_nominal_startup_window": {
+    "duration_s": 1.5,
+    "seeds": [41, 42],
+    "baseline_tracking_rmse_px": 21.841842,
+    "locked_percentage": 26.666667,
+    "note": "Short run is dominated by acquisition transient; localizer differences were below 0.001 px tracking RMSE and are not a steady-state ranking."
+  },
+  "measured_regime_winners": {
+    "clean_accuracy": "weighted_centroid",
+    "high_noise": "gaussian_fit",
+    "blur": "gradient_centroid",
+    "elliptical": "gaussian_fit",
+    "background_gradient": "gradient_centroid",
+    "glare": "gradient_centroid",
+    "distractor": "no robust winner; association error dominates",
+    "clipping": "binary_centroid",
+    "dynamic_vibration": "gradient_centroid",
+    "lowest_clean_latency": "gradient_centroid",
+    "preliminary_accuracy_compute_tradeoff": "gradient_centroid"
+  },
+  "failures": [
+    "Frozen 120-DN threshold produced zero valid measurements in WEAK_BEACON for every method.",
+    "All methods followed the wrong bright candidate in portions of DISTRACTOR and COMBINED_STRESS.",
+    "Two seeds are engineering evidence, not a statistically conclusive ranking."
+  ],
+  "full_rows_location": "SQLite lab_results table in data/experiments.sqlite3"
+}

@@ -1,0 +1,52 @@
+{
+  "kind": "ESTIMATOR_BENCHMARK_SUMMARY",
+  "simulation_schema_version": "4.0.0",
+  "method": "paired open-loop EstimatorReplaySequence; identical SpotMeasurements",
+  "seeds": [41, 42],
+  "estimators": ["none", "kf_cv", "ekf_angular", "ukf_angular", "akf_r"],
+  "rmse_px_by_condition": {
+    "NOMINAL": {"none": 0.419838, "kf_cv": 0.412857, "ekf_angular": 0.414600, "ukf_angular": 0.410402, "akf_r": 0.422970},
+    "HIGH_MEASUREMENT_NOISE": {"none": 0.423747, "kf_cv": 0.400643, "ekf_angular": 0.402548, "ukf_angular": 0.398631, "akf_r": 0.440399},
+    "WEAK_BEACON": {"none": null, "kf_cv": null, "ekf_angular": null, "ukf_angular": null, "akf_r": null},
+    "HIGH_VIBRATION": {"none": 0.400419, "kf_cv": 0.383770, "ekf_angular": 0.383677, "ukf_angular": 0.378816, "akf_r": 0.391059},
+    "MANOEUVRE": {"none": 0.362616, "kf_cv": 1.153945, "ekf_angular": 1.153906, "ukf_angular": 1.152015, "akf_r": 1.166166},
+    "SHORT_DROPOUT": {"none": 0.409514, "kf_cv": 0.755312, "ekf_angular": 0.755768, "ukf_angular": 0.746294, "akf_r": 0.765447},
+    "LONG_DROPOUT": {"none": 0.431365, "kf_cv": 2.025803, "ekf_angular": 2.025480, "ukf_angular": 1.996231, "akf_r": 2.025675},
+    "DISTRACTOR_OUTLIER": {"none": 17.853581, "kf_cv": 17.852613, "ekf_angular": 17.853514, "ukf_angular": 17.848424, "akf_r": 17.910886},
+    "GROUND_SAT_STRESS": {"none": null, "kf_cv": null, "ekf_angular": null, "ukf_angular": null, "akf_r": null},
+    "UAV_AGGRESSIVE": {"none": 0.374388, "kf_cv": 0.634672, "ekf_angular": 0.632884, "ukf_angular": 0.629172, "akf_r": 0.642576},
+    "COMBINED_STRESS": {"none": 46.092266, "kf_cv": 46.105766, "ekf_angular": 46.105562, "ukf_angular": 46.100535, "akf_r": 46.104501}
+  },
+  "nominal_consistency": {
+    "kf_cv": {"mean_nis": 0.101165, "mean_nees_position": 0.087321, "mean_latency_ms": 0.170063},
+    "ekf_angular": {"mean_nis": 0.101089, "mean_nees_position": 0.088342, "mean_latency_ms": 0.197987},
+    "ukf_angular": {"mean_nis": 0.100249, "mean_nees_position": 0.086747, "mean_latency_ms": 0.538830},
+    "akf_r": {"mean_nis": 0.098069, "mean_nees_position": 0.087575, "mean_latency_ms": 0.226473}
+  },
+  "dropout_rmse_px": {
+    "SHORT_DROPOUT": {"kf_cv": 1.344095, "ekf_angular": 1.344588, "ukf_angular": 1.328737, "akf_r": 1.364360},
+    "LONG_DROPOUT": {"kf_cv": 2.597011, "ekf_angular": 2.597012, "ukf_angular": 2.556792, "akf_r": 2.596978}
+  },
+  "closed_loop_nominal_startup_window": {
+    "duration_s": 1.5,
+    "seeds": [41, 42],
+    "kf_cv_rmse_px": 21.841842,
+    "none_rmse_px": 21.910941,
+    "ekf_angular_rmse_px": 21.841132,
+    "ukf_angular_rmse_px": 21.843343,
+    "akf_r_rmse_px": 21.839151,
+    "locked_percentage_all": 26.666667,
+    "note": "Acquisition transient dominates; this short closed-loop run demonstrates integration, not a steady-state winner."
+  },
+  "measured_findings": [
+    "UKF-angular had the lowest filtered open-loop RMSE in every condition with valid measurements, but improvements over KF-CV were small and nominal latency was about 3.2 times higher.",
+    "Raw pass-through beat every filter during abrupt manoeuvre and aggressive UAV replay because constant-rate filters lagged; NONE cannot survive dropout, so its dropout-frame error is absent and its overall RMSE is not directly comparable there.",
+    "AKF-R did not beat fixed KF in this matrix; its conservative quality mapping needs tuning on separate training scenarios before promotion.",
+    "Weak-beacon and ground-stress sequences had no valid SpotMeasurements; no estimator can recover information the vision layer never supplies.",
+    "No numerical recovery events occurred in this matrix; the unit suite separately exercises failure handling.",
+    "Two seeds are preliminary engineering evidence, not a significance claim."
+  ],
+  "preliminary_filtered_accuracy_winner": "ukf_angular",
+  "accuracy_compute_tradeoff": "kf_cv",
+  "full_rows_location": "SQLite lab_results and runs tables in data/experiments.sqlite3"
+}

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="520" viewBox="0 0 1500 520" role="img" aria-labelledby="title desc">
+  <title id="title">Evidence-gated experiment and promotion cycle</title>
+  <desc id="desc">Candidate algorithms are configured, replayed on paired seeds, stressed, evaluated and either promoted or retained as experiments.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07101a"/><stop offset="1" stop-color="#101c2a"/></linearGradient>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#7cb3ff"/></marker>
+    <style>.tag{font:700 13px monospace;letter-spacing:2px;fill:#62e5c3}.title{font:700 30px Arial,sans-serif;fill:#fff}.box{fill:#111d2b;stroke:#33475d;stroke-width:2}.gate{fill:#10283a;stroke:#62e5c3;stroke-width:2}.bad{fill:#2a1821;stroke:#ff7085;stroke-width:2}.h{font:700 18px Arial,sans-serif;fill:#fff}.s{font:14px Arial,sans-serif;fill:#9fb0c4}.line{stroke:#7cb3ff;stroke-width:3;fill:none;marker-end:url(#a)}.yes{font:700 13px monospace;fill:#62e5c3}.no{font:700 13px monospace;fill:#ff7085}</style>
+  </defs>
+  <rect width="1500" height="520" rx="24" fill="url(#bg)"/>
+  <text class="tag" x="55" y="55">EVIDENCE-GATED AI</text><text class="title" x="55" y="95">A model earns promotion; selection alone does not make it better</text>
+  <rect class="box" x="55" y="180" width="210" height="112" rx="15"/><text class="h" x="160" y="220" text-anchor="middle">Candidate module</text><text class="s" x="160" y="249" text-anchor="middle">CNN / GRU / LSTM</text><text class="s" x="160" y="273" text-anchor="middle">or classical alternative</text>
+  <rect class="box" x="320" y="180" width="210" height="112" rx="15"/><text class="h" x="425" y="220" text-anchor="middle">Paired seeds</text><text class="s" x="425" y="249" text-anchor="middle">same frames, physics</text><text class="s" x="425" y="273" text-anchor="middle">and baseline</text>
+  <rect class="box" x="585" y="180" width="210" height="112" rx="15"/><text class="h" x="690" y="220" text-anchor="middle">Stress + OOD</text><text class="s" x="690" y="249" text-anchor="middle">noise, cloud, glare</text><text class="s" x="690" y="273" text-anchor="middle">dropout and motion</text>
+  <rect class="box" x="850" y="180" width="210" height="112" rx="15"/><text class="h" x="955" y="220" text-anchor="middle">Closed loop</text><text class="s" x="955" y="249" text-anchor="middle">RMSE · P95 · lock</text><text class="s" x="955" y="273" text-anchor="middle">latency · saturation</text>
+  <rect class="gate" x="1115" y="165" width="270" height="142" rx="18"/><text class="h" x="1250" y="210" text-anchor="middle">Does it improve safely?</text><text class="s" x="1250" y="242" text-anchor="middle">held-out + OOD + end-to-end</text><text class="s" x="1250" y="268" text-anchor="middle">within latency limits</text>
+  <path class="line" d="M265 236 H320"/><path class="line" d="M530 236 H585"/><path class="line" d="M795 236 H850"/><path class="line" d="M1060 236 H1115"/>
+  <rect class="gate" x="1020" y="380" width="300" height="92" rx="15"/><text class="yes" x="1045" y="408">YES</text><text class="h" x="1170" y="429" text-anchor="middle">Promote to preset</text><text class="s" x="1170" y="454" text-anchor="middle">keep replayable evidence</text>
+  <rect class="bad" x="555" y="380" width="330" height="92" rx="15"/><text class="no" x="580" y="408">NO</text><text class="h" x="720" y="429" text-anchor="middle">Remain experimental</text><text class="s" x="720" y="454" text-anchor="middle">fallback + failure record</text>
+  <path class="line" d="M1250 307 V380"/><path class="line" d="M1140 307 V342 H720 V380"/>
+  <path class="line" d="M555 426 H430 V320 H160 V292"/>
+</svg>

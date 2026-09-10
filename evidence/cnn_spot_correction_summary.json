@@ -1,0 +1,13 @@
+{
+  "schema": "cnn-spot-evidence-1.0.0",
+  "dataset_id": "spot-207bf811dc55",
+  "dataset_version": "spot-residual-1.2.0",
+  "model_id": "cnn-tiny-residual-v4",
+  "weights_hash": "371588d4f958fcc3c162cc1d75ee813ea18040c4ed4c7e88e0a6c619cf7a4aa1",
+  "held_out": {"samples": 160, "classical_rmse_px": 0.0867534950, "cnn_rmse_px": 0.0869006366, "false_correction_percent": 52.5},
+  "ood": {"samples": 128, "classical_rmse_px": 0.9960910678, "cnn_rmse_px": 2.2099957466, "false_correction_percent": 100.0},
+  "latency_ms": {"mean": 1.78329, "p95": 1.994945},
+  "closed_loop": {"paired_seeds": [41, 42], "duration_s": 1.5, "classical_rmse_px": 72.72371584, "guarded_cnn_rmse_px": 72.72371584, "fallbacks_per_run": 45},
+  "promotion_decision": "REJECTED_KEEP_EXPERIMENTAL",
+  "reason": "No held-out gain, severe OOD regression, safe live fallback verified"
+}

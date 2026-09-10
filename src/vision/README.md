@@ -1,13 +1,10 @@
-# OpenCV Detection — Member 3
+# Classical Vision — Member 3
 
-## Task
+Candidate generation is separate from subpixel localization. Registry choices are
+the preserved legacy contour centroid, binary centroid, background-subtracted
+intensity centroid, Sobel-gradient centroid and bounded 2-D Gaussian fit. All return
+one `SpotMeasurement` with quality, image-SNR proxy, failure reason and optional
+covariance. Truth is evaluation-only. No YOLO/CNN is implemented yet.
 
-Detect the beacon from pixels using thresholding, blob filtering and weighted centroid estimation.
-
-## Technologies
-
-OpenCV and NumPy.
-
-## Track
-
-Threshold, blob area, centroid, SNR, confidence, detection flag, false detections and processing time.
+Track localization RMSE/p95, valid rate, distractor confusion, clipping/saturation,
+confidence features and mean/p95 latency. See `docs/CLASSICAL_VISION.md`.
